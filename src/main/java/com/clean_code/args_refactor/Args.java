@@ -243,7 +243,15 @@ public class Args {
 
     public boolean getBoolean(char arg) {
         ArgumentMarshaler am = booleanArgs.get(arg);
-        return am != null && (Boolean) am.get();
+        boolean b = false;
+
+        try {
+            b = am != null && (Boolean) am.get();
+        } catch(ClassCastException e) {
+            b = false;
+        }
+        
+        return b;
     }
 
     public boolean has(char arg) {
