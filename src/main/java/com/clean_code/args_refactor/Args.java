@@ -78,8 +78,7 @@ public class Args {
     }
 
     private void parseBooleanSchemaElement(char elementId) {
-        ArgumentMarshaler m = new BooleanArgumentMarshaler();
-        marshalers.put(elementId, m);
+        marshalers.put(elementId, new BooleanArgumentMarshaler());
     }
 
     private void parseIntegerSchemaElement(char elementId) {
