@@ -11,8 +11,6 @@ public class Args {
     private String[] args;
     private boolean valid = true;
     private Set<Character> unexpectedArguments = new TreeSet<Character>();
-    private Map<Character, ArgumentMarshaler> stringArgs = new HashMap<Character, ArgumentMarshaler>();
-    private Map<Character, ArgumentMarshaler> intArgs = new HashMap<Character, ArgumentMarshaler>();
     private Map<Character, ArgumentMarshaler> marshalers = new HashMap<Character, ArgumentMarshaler>();
     private Set<Character> argsFound = new HashSet<Character>();
     private int currentArgument;
@@ -82,15 +80,11 @@ public class Args {
     }
 
     private void parseIntegerSchemaElement(char elementId) {
-        ArgumentMarshaler m = new IntegerArgumentMarshaler();
-        intArgs.put(elementId, m);
-        marshalers.put(elementId, m);
+        marshalers.put(elementId, new IntegerArgumentMarshaler());
     }
 
     private void parseStringSchemaElement(char elementId) {
-        ArgumentMarshaler m = new StringArgumentMarshaler();
-        stringArgs.put(elementId, m);
-        marshalers.put(elementId, m);
+        marshalers.put(elementId, new StringArgumentMarshaler());
     }
 
     private boolean isStringSchemaElement(String elementTail) {
@@ -229,13 +223,23 @@ public class Args {
     }
 
     public String getString(char arg) {
-        ArgumentMarshaler am = stringArgs.get(arg);
-        return am == null ? "" : (String) am.get();
+        ArgumentMarshaler am = marshalers.get(arg);
+
+        try {
+            return am == null ? "" : (String) am.get();
+        } catch(ClassCastException e) {
+            return "";
+        }
     }
 
     public int getInt(char arg) {
-        ArgumentMarshaler am = intArgs.get(arg);
-        return am == null ? 0 : (Integer) am.get();
+        ArgumentMarshaler am = marshalers.get(arg);
+
+        try { 
+            return am == null ? 0 : (Integer) am.get();
+        } catch(ClassCastException e) {
+            return 0;
+        }
     }
 
     public boolean getBoolean(char arg) {
