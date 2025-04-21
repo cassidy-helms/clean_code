@@ -14,9 +14,6 @@ public class Args {
     private Map<Character, ArgumentMarshaler> marshalers = new HashMap<Character, ArgumentMarshaler>();
     private Set<Character> argsFound = new HashSet<Character>();
     private Iterator<String> currentArgument;
-    private char errorArgumentId = '\0';
-    private String errorParameter = "TILT";
-    private ArgsException.ErrorCode errorCode = ArgsException.ErrorCode.OK;
     private List<String> argsList;
 
     public Args(String schema, String[] args) throws ArgsException {
@@ -98,9 +95,7 @@ public class Args {
         if(setArgument(argChar))
             argsFound.add(argChar);
         else {
-            unexpectedArguments.add(argChar);
-            errorCode = ArgsException.ErrorCode.UNEXPECTED_ARGUMENT;
-            valid = false;
+            throw new ArgsException(ArgsException.ErrorCode.UNEXPECTED_ARGUMENT, argChar, null);
         }
     }
 
@@ -114,8 +109,7 @@ public class Args {
             m.set(currentArgument);
             return true;
         } catch(ArgsException e) {
-            valid = false;
-            errorArgumentId = argChar;
+            e.setErrorArgumentId(argChar);
             throw e;
         }
     }
@@ -207,8 +201,7 @@ public class Args {
             try {
                 stringValue = currentArgument.next();
             } catch(NoSuchElementException e) {
-                errorCode = ArgsException.ErrorCode.MISSING_STRING;
-                throw new ArgsException();
+                throw new ArgsException(ArgsException.ErrorCode.MISSING_STRING);
             }
         }
 
@@ -227,12 +220,9 @@ public class Args {
                 parameter = currentArgument.next();
                 integerValue = Integer.parseInt(parameter);
             } catch(NoSuchElementException e) {
-                errorCode = ArgsException.ErrorCode.MISSING_INTEGER;
-                throw new ArgsException();
+                throw new ArgsException(ArgsException.ErrorCode.MISSING_INTEGER);
             } catch(NumberFormatException e) {
-                errorParameter = parameter;
-                errorCode = ArgsException.ErrorCode.INVALID_INTEGER;
-                throw new ArgsException();
+                throw new ArgsException(ArgsException.ErrorCode.INVALID_INTEGER, parameter);
             }
         }
 
@@ -251,12 +241,9 @@ public class Args {
                 parameter = currentArgument.next();
                 doubleValue = Double.parseDouble(parameter);
             } catch(NoSuchElementException e) {
-                errorCode = ArgsException.ErrorCode.MISSING_DOUBLE;
-                throw new ArgsException();
+                throw new ArgsException(ArgsException.ErrorCode.MISSING_DOUBLE);
             } catch(NumberFormatException e) {
-                errorParameter = parameter;
-                errorCode = ArgsException.ErrorCode.INVALID_DOUBLE;
-                throw new ArgsException();
+                throw new ArgsException(ArgsException.ErrorCode.INVALID_DOUBLE, parameter);
             }
         }
 
