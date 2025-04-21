@@ -52,6 +52,8 @@ public class ArgsException extends Exception {
         switch(errorCode) {
             case OK:
                 throw new Exception("TILT: Should not go here.");
+            case INVALID_ARGUMENT_NAME:
+                return String.format("Argument -%c expects a string but was '%s'", errorArgumentId, errorParameter);
             case UNEXPECTED_ARGUMENT:
                 return String.format("Argument -%c unexpected.", errorArgumentId);
             case MISSING_STRING:
@@ -64,12 +66,14 @@ public class ArgsException extends Exception {
                 return String.format("Argument -%c expects a double but was '%s'.", errorArgumentId, errorParameter);
             case MISSING_DOUBLE:
                 return String.format("Could not find double parameter for -%c.", errorArgumentId);
+            case INVALID_FORMAT:
+                return String.format("Invalid format for %c %s", errorArgumentId, errorParameter);
         }
 
         return "";
     }
 
     public enum ErrorCode {
-        OK, MISSING_STRING, MISSING_INTEGER, INVALID_INTEGER, MISSING_DOUBLE, INVALID_DOUBLE, UNEXPECTED_ARGUMENT
+        OK, MISSING_STRING, MISSING_INTEGER, INVALID_INTEGER, MISSING_DOUBLE, INVALID_DOUBLE, UNEXPECTED_ARGUMENT, INVALID_ARGUMENT_NAME, INVALID_FORMAT
     }
 };
