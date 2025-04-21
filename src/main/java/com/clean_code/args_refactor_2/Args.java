@@ -217,8 +217,6 @@ public class Args {
     private abstract class ArgumentMarshaler {
         public abstract void set(Iterator<String> currentArgument) throws ArgsException;
 
-        public abstract void set(String s) throws ArgsException;
-
         public abstract Object get();
     }
 
@@ -228,8 +226,6 @@ public class Args {
         public void set(Iterator<String> currentArgument) throws ArgsException {
             booleanValue = true;
         }
-
-        public void set(String s) {}
 
         public Object get() {
             return booleanValue;
@@ -248,10 +244,6 @@ public class Args {
             }
         }
 
-        public void set(String s) {
-            stringValue  = s;
-        }
-
         public Object get() {
             return stringValue;
         }
@@ -265,22 +257,14 @@ public class Args {
 
             try { 
                 parameter = currentArgument.next();
-                set(parameter);
+                integerValue = Integer.parseInt(parameter);
             } catch(NoSuchElementException e) {
                 errorCode = ErrorCode.MISSING_INTEGER;
                 throw new ArgsException();
-            } catch(ArgsException e) {
+            } catch(NumberFormatException e) {
                 errorParameter = parameter;
                 errorCode = ErrorCode.INVALID_INTEGER;
                 throw e;
-            }
-        }
-
-        public void set(String s) throws ArgsException {
-            try {
-                integerValue = Integer.parseInt(s);
-            } catch(NumberFormatException e) {
-                throw new ArgsException();
             }
         }
 
