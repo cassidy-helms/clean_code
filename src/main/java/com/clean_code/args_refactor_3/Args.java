@@ -131,37 +131,6 @@ public class Args {
             return "";
     }
 
-    public String errorMessage() throws Exception {
-        switch(errorCode) {
-            case OK:
-                throw new Exception("TILT: Should not go here.");
-            case UNEXPECTED_ARGUMENT:
-                return unexpectedArgumentMessage();
-            case MISSING_STRING:
-                return String.format("Could not find string parameter for -%c.", errorArgumentId);
-            case INVALID_INTEGER:
-                return String.format("Argument -%c expects an integer but was '%s'.", errorArgumentId, errorParameter);
-            case MISSING_INTEGER:
-                return String.format("Could not find integer parameter for -%c.", errorArgumentId);
-            case INVALID_DOUBLE:
-                return String.format("Argument -%c expects a double but was '%s'.", errorArgumentId, errorParameter);
-            case MISSING_DOUBLE:
-                return String.format("Could not find double parameter for -%c.", errorArgumentId);
-        }
-
-        return "";
-    }
-
-    private String unexpectedArgumentMessage() {
-        StringBuffer message = new StringBuffer("Argument(s) -");
-        for(char c : unexpectedArguments) {
-            message.append(c);
-        }
-        message.append(" unexpected.");
-
-        return message.toString();
-    }
-
     public String getString(char arg) {
         ArgumentMarshaler am = marshalers.get(arg);
 

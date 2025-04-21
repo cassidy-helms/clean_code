@@ -1,7 +1,7 @@
 package com.clean_code;
 
-import com.clean_code.args_refactor_2.Args;
-import com.clean_code.args_refactor_2.Args.ArgsException;
+import com.clean_code.args_refactor_3.Args;
+import com.clean_code.args_refactor_3.exception.ArgsException;
 
 /**
  * Hello world!
