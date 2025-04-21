@@ -125,7 +125,7 @@ public class Args {
 
         try {
             if(m instanceof BooleanArgumentMarshaler)
-                setBooleanArg(m);
+                setBooleanArg(m, currentArgument);
             else if(m instanceof StringArgumentMarshaler)
                 setStringArg(m);
             else if(m instanceof IntegerArgumentMarshaler)
@@ -164,10 +164,8 @@ public class Args {
         }
     }
 
-    private void setBooleanArg(ArgumentMarshaler m) {
-        try {
-            m.set("true");
-        } catch(ArgsException e) {}
+    private void setBooleanArg(ArgumentMarshaler m, Iterator<String> currentArgument) throws ArgsException {
+        m.set("true");
     }
 
     public int cardinality() {
