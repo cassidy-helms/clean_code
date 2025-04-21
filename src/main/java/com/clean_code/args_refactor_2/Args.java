@@ -250,6 +250,8 @@ public class Args {
     private class ArgsException extends Exception {};
 
     private abstract class ArgumentMarshaler {
+        public abstract void set(Iterator<String> currentArgument) throws ArgsException;
+
         public abstract void set(String s) throws ArgsException;
 
         public abstract Object get();
@@ -258,9 +260,11 @@ public class Args {
     private class BooleanArgumentMarshaler extends ArgumentMarshaler {       
         private boolean booleanValue = false;
 
-        public void set(String s) {
+        public void set(Iterator<String> currentArgument) throws ArgsException {
             booleanValue = true;
         }
+
+        public void set(String s) {}
 
         public Object get() {
             return booleanValue;
@@ -269,6 +273,10 @@ public class Args {
 
     private class StringArgumentMarshaler extends ArgumentMarshaler {
         private String stringValue = "";
+
+        public void set(Iterator<String> currentArgument) throws ArgsException {
+
+        }
 
         public void set(String s) {
             stringValue  = s;
@@ -281,6 +289,10 @@ public class Args {
 
     private class IntegerArgumentMarshaler extends ArgumentMarshaler {
         private int integerValue = 0;
+
+        public void set(Iterator<String> currentArgument) throws ArgsException {
+            
+        }
 
         public void set(String s) throws ArgsException {
             try {
