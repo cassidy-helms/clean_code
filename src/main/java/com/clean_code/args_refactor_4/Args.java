@@ -26,12 +26,11 @@ public class Args {
         parseArguments();
     }
 
-    private boolean parseSchema() throws ArgsException {
+    private void parseSchema() throws ArgsException {
         for(String element : schema.split(",")) {
             if(element.length() > 0) 
                 parseSchemaElement(element.trim());
         }
-        return true;
     }
 
     private void parseSchemaElement(String element) throws ArgsException {
