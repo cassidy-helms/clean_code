@@ -17,6 +17,7 @@ public class Args {
     private char errorArgumentId = '\0';
     private String errorParameter = "TILT";
     private ErrorCode errorCode = ErrorCode.OK;
+    private List<String> argsList;
     
     private enum ErrorCode {
         OK, MISSING_STRING, MISSING_INTEGER, INVALID_INTEGER, UNEXPECTED_ARGUMENT
@@ -25,11 +26,12 @@ public class Args {
     public Args(String schema, String[] args) throws ParseException {
         this.schema = schema;
         this.args = args;
+        argsList = Arrays.asList(args);
         valid = parse();
     }
 
     private boolean parse() throws ParseException {
-        if(schema.length() == 0 && args.length == 0)
+        if(schema.length() == 0 && args.length == 0 && argsList.size() == 0)
             return true;
         parseSchema();
         try {
