@@ -3,7 +3,7 @@ package com.clean_code.args_refactor_3;
 import java.util.*;
 
 import com.clean_code.args_refactor_3.exception.ArgsException;
-import com.clean_code.args_refactor_3.marshaler.ArgumentMarshaler;
+import com.clean_code.args_refactor_3.marshaler.*;
 
 /*
  * This is not my code.  I am doing a slow walkthough of the Args Successive Refinement in Chapter 14 of Robert C. Martin's Clean Code
@@ -174,75 +174,5 @@ public class Args {
 
     public boolean isValid() {
         return valid;
-    }
-
-    private class BooleanArgumentMarshaler implements ArgumentMarshaler {       
-        private boolean booleanValue = false;
-
-        public void set(Iterator<String> currentArgument) throws ArgsException {
-            booleanValue = true;
-        }
-
-        public Object get() {
-            return booleanValue;
-        }
-    }
-
-    private class StringArgumentMarshaler implements ArgumentMarshaler {
-        private String stringValue = "";
-
-        public void set(Iterator<String> currentArgument) throws ArgsException {
-            try {
-                stringValue = currentArgument.next();
-            } catch(NoSuchElementException e) {
-                throw new ArgsException(ArgsException.ErrorCode.MISSING_STRING);
-            }
-        }
-
-        public Object get() {
-            return stringValue;
-        }
-    }
-
-    private class IntegerArgumentMarshaler implements ArgumentMarshaler {
-        private int integerValue = 0;
-
-        public void set(Iterator<String> currentArgument) throws ArgsException {
-            String parameter = null;
-
-            try { 
-                parameter = currentArgument.next();
-                integerValue = Integer.parseInt(parameter);
-            } catch(NoSuchElementException e) {
-                throw new ArgsException(ArgsException.ErrorCode.MISSING_INTEGER);
-            } catch(NumberFormatException e) {
-                throw new ArgsException(ArgsException.ErrorCode.INVALID_INTEGER, parameter);
-            }
-        }
-
-        public Object get() {
-            return integerValue;
-        }
-    }
-
-    private class DoubleArgumentMarshaler implements ArgumentMarshaler {
-        private double doubleValue = 0;
-
-        public void set(Iterator<String> currentArgument) throws ArgsException {
-            String parameter = null;
-
-            try {
-                parameter = currentArgument.next();
-                doubleValue = Double.parseDouble(parameter);
-            } catch(NoSuchElementException e) {
-                throw new ArgsException(ArgsException.ErrorCode.MISSING_DOUBLE);
-            } catch(NumberFormatException e) {
-                throw new ArgsException(ArgsException.ErrorCode.INVALID_DOUBLE, parameter);
-            }
-        }
-
-        public Object get() {
-            return doubleValue;
-        }
     }
 }
