@@ -1,8 +1,7 @@
 package com.clean_code;
 
-import java.text.ParseException;
-
 import com.clean_code.args_refactor_2.Args;
+import com.clean_code.args_refactor_2.Args.ArgsException;
 
 /**
  * Hello world!
@@ -24,7 +23,7 @@ public class App
             System.out.println("Port: " + port);
             System.out.println("Directory: " + directory);
             System.out.println("Double: " + db);
-        } catch(ParseException e) {
+        } catch(ArgsException e) {
             e.printStackTrace();
         }
     }
