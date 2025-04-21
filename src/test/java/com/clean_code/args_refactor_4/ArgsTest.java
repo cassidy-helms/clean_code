@@ -1,5 +1,7 @@
 package com.clean_code.args_refactor_4;
 
+import java.util.Arrays;
+
 import com.clean_code.args_refactor_4.exception.ArgsException;
 
 import junit.framework.TestCase;
@@ -78,6 +80,23 @@ public class ArgsTest extends TestCase {
         assertEquals(2, args.cardinality());
         assertTrue(args.has('x'));
         assertTrue(args.has('y'));
+    }
+
+    public void testSimpleStringArrayPresent() throws Exception {
+        Args args = new Args("x[*]", new String[]{"-x", "1,2,3"});
+        assertEquals(1, args.cardinality());
+        assertTrue(args.has('x'));
+        assertTrue(Arrays.equals(new String[]{"1", "2", "3"}, args.getStringArray('x')));
+    }
+
+    public void testMissingStringArrayArgument() throws Exception {
+        try {
+            new Args("x[*]", new String[] {"-x"});
+            fail();
+        } catch (ArgsException e) {
+            assertEquals(ArgsException.ErrorCode.MISSING_ARRAY, e.getErrorCode());
+            assertEquals('x', e.getErrorArgumentId());
+        }
     }
 
     public void testSimpleIntPresent() throws Exception {

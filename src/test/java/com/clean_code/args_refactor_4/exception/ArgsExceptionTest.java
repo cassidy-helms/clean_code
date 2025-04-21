@@ -24,6 +24,11 @@ public class ArgsExceptionTest extends TestCase {
         assertEquals("Could not find string parameter for -x.", e.errorMessage());
     }
 
+    public void testMissingStringArrayMessage() throws Exception {
+        ArgsException e = new ArgsException(ArgsException.ErrorCode.MISSING_ARRAY, 'x', null);
+        assertEquals("Could not find string array parameter for -x.", e.errorMessage());
+    }
+
     public void testInvalidIntegerMessage() throws Exception {
         ArgsException e = new ArgsException(ArgsException.ErrorCode.INVALID_INTEGER, 'x', "forty two");
         assertEquals("Argument -x expects an integer but was 'forty two'.", e.errorMessage());

@@ -58,6 +58,8 @@ public class ArgsException extends Exception {
                 return String.format("Argument -%c unexpected.", errorArgumentId);
             case MISSING_STRING:
                 return String.format("Could not find string parameter for -%c.", errorArgumentId);
+            case MISSING_ARRAY:
+                return String.format("Could not find string array parameter for -%c.", errorArgumentId);
             case INVALID_INTEGER:
                 return String.format("Argument -%c expects an integer but was '%s'.", errorArgumentId, errorParameter);
             case MISSING_INTEGER:
@@ -74,6 +76,6 @@ public class ArgsException extends Exception {
     }
 
     public enum ErrorCode {
-        OK, MISSING_STRING, MISSING_INTEGER, INVALID_INTEGER, MISSING_DOUBLE, INVALID_DOUBLE, UNEXPECTED_ARGUMENT, INVALID_ARGUMENT_NAME, INVALID_FORMAT
+        OK, MISSING_STRING, MISSING_INTEGER, MISSING_ARRAY, INVALID_INTEGER, MISSING_DOUBLE, INVALID_DOUBLE, UNEXPECTED_ARGUMENT, INVALID_ARGUMENT_NAME, INVALID_FORMAT
     }
 };

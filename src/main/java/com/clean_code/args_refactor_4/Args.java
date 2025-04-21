@@ -46,6 +46,8 @@ public class Args {
             marshalers.put(elementId, new IntegerArgumentMarshaler());
         else if(elementTail.equals("##"))
             marshalers.put(elementId, new DoubleArgumentMarshaler());
+        else if(elementTail.equals("[*]"))
+            marshalers.put(elementId, new StringArrayArgumentMarshaler());
         else {
             throw new ArgsException(ArgsException.ErrorCode.INVALID_FORMAT, elementId, elementTail);
         }
@@ -116,6 +118,16 @@ public class Args {
             return am == null ? "" : (String) am.get();
         } catch(ClassCastException e) {
             return "";
+        }
+    }
+
+    public String[] getStringArray(char arg) {
+        ArgumentMarshaler am = marshalers.get(arg);
+
+        try {
+            return am == null ? new String[]{} : (String[]) am.get();
+        } catch(ClassCastException e) {
+            return new String[]{};
         }
     }
 
