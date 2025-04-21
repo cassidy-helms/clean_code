@@ -8,7 +8,6 @@ import java.util.*;
  */
 public class Args {
     private String schema;
-    private String[] args;
     private boolean valid = true;
     private Set<Character> unexpectedArguments = new TreeSet<Character>();
     private Map<Character, ArgumentMarshaler> marshalers = new HashMap<Character, ArgumentMarshaler>();
@@ -25,13 +24,12 @@ public class Args {
 
     public Args(String schema, String[] args) throws ParseException {
         this.schema = schema;
-        this.args = args;
         argsList = Arrays.asList(args);
         valid = parse();
     }
 
     private boolean parse() throws ParseException {
-        if(schema.length() == 0 && args.length == 0 && argsList.size() == 0)
+        if(schema.length() == 0 && argsList.size() == 0)
             return true;
         parseSchema();
         try {
@@ -90,8 +88,8 @@ public class Args {
     }
     
     private boolean parseArguments() throws ArgsException {
-        for(currentArgument = 0; currentArgument < args.length; currentArgument++) {
-            String arg = args[currentArgument];
+        for(currentArgument = 0; currentArgument < argsList.size(); currentArgument++) {
+            String arg = argsList.get(currentArgument);
             parseArgument(arg);
         }
 
@@ -145,7 +143,7 @@ public class Args {
         String parameter = null;
 
         try {
-            parameter = args[currentArgument];
+            parameter = argsList.get(currentArgument);
             m.set(parameter);
         } catch(ArrayIndexOutOfBoundsException e) {
             errorCode = ErrorCode.MISSING_INTEGER;
@@ -161,7 +159,7 @@ public class Args {
         currentArgument++;
 
         try {
-            m.set(args[currentArgument]);
+            m.set(argsList.get(currentArgument));
         } catch(ArrayIndexOutOfBoundsException e) {
             errorCode = ErrorCode.MISSING_STRING;
             throw new ArgsException();
