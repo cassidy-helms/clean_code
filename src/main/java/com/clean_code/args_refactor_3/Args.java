@@ -10,7 +10,6 @@ import com.clean_code.args_refactor_3.marshaler.*;
  */
 public class Args {
     private String schema;
-    private boolean valid = true;
     private Map<Character, ArgumentMarshaler> marshalers = new HashMap<Character, ArgumentMarshaler>();
     private Set<Character> argsFound = new HashSet<Character>();
     private Iterator<String> currentArgument;
@@ -19,28 +18,18 @@ public class Args {
     public Args(String schema, String[] args) throws ArgsException {
         this.schema = schema;
         argsList = Arrays.asList(args);
-        valid = parse();
+        parse();
     }
 
-    private boolean parse() throws ArgsException {
-        if(schema.length() == 0 && argsList.size() == 0)
-            return true;
+    private void parse() throws ArgsException {
         parseSchema();
-        try {
-            parseArguments();
-        } catch(ArgsException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return valid;
+        parseArguments();
     }
 
     private boolean parseSchema() throws ArgsException {
         for(String element : schema.split(",")) {
-            if(element.length() > 0) {
-                String trimmedElement = element.trim();
-                parseSchemaElement(trimmedElement);
-            }
+            if(element.length() > 0) 
+                parseSchemaElement(element.trim());
         }
         return true;
     }
@@ -71,13 +60,11 @@ public class Args {
         }
     }
     
-    private boolean parseArguments() throws ArgsException {
+    private void parseArguments() throws ArgsException {
         for(currentArgument = argsList.iterator(); currentArgument.hasNext();) {
             String arg = currentArgument.next();
             parseArgument(arg);
         }
-
-        return true;
     }
 
     private void parseArgument(String arg) throws ArgsException {
@@ -170,9 +157,5 @@ public class Args {
 
     public boolean has(char arg) {
         return argsFound.contains(arg);
-    }
-
-    public boolean isValid() {
-        return valid;
     }
 }
