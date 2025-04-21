@@ -53,7 +53,7 @@ public class ArgsException extends Exception {
             case OK:
                 throw new Exception("TILT: Should not go here.");
             case INVALID_ARGUMENT_NAME:
-                return String.format("Argument -%c expects a string but was '%s'", errorArgumentId, errorParameter);
+                return String.format("Argument expects a string but was '%c'", errorArgumentId);
             case UNEXPECTED_ARGUMENT:
                 return String.format("Argument -%c unexpected.", errorArgumentId);
             case MISSING_STRING:
@@ -67,7 +67,7 @@ public class ArgsException extends Exception {
             case MISSING_DOUBLE:
                 return String.format("Could not find double parameter for -%c.", errorArgumentId);
             case INVALID_FORMAT:
-                return String.format("Invalid format for %c %s", errorArgumentId, errorParameter);
+                return String.format("Invalid format for '%c'", errorArgumentId);
         }
 
         return "";
