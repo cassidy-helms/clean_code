@@ -12,7 +12,7 @@ public class Args {
     private Set<Character> unexpectedArguments = new TreeSet<Character>();
     private Map<Character, ArgumentMarshaler> marshalers = new HashMap<Character, ArgumentMarshaler>();
     private Set<Character> argsFound = new HashSet<Character>();
-    private int currentArgument;
+    private Iterator<String> currentArgument;
     private char errorArgumentId = '\0';
     private String errorParameter = "TILT";
     private ErrorCode errorCode = ErrorCode.OK;
@@ -88,8 +88,8 @@ public class Args {
     }
     
     private boolean parseArguments() throws ArgsException {
-        for(currentArgument = 0; currentArgument < argsList.size(); currentArgument++) {
-            String arg = argsList.get(currentArgument);
+        for(currentArgument = argsList.iterator(); currentArgument.hasNext();) {
+            String arg = currentArgument.next();
             parseArgument(arg);
         }
 
@@ -139,13 +139,12 @@ public class Args {
     }
 
     private void setIntArg(ArgumentMarshaler m) throws ArgsException {
-        currentArgument++;
         String parameter = null;
 
         try {
-            parameter = argsList.get(currentArgument);
+            parameter = currentArgument.next();
             m.set(parameter);
-        } catch(ArrayIndexOutOfBoundsException e) {
+        } catch(NoSuchElementException e) {
             errorCode = ErrorCode.MISSING_INTEGER;
             throw new ArgsException();
         } catch(ArgsException e) {
@@ -156,10 +155,8 @@ public class Args {
     }
 
     private void setStringArg(ArgumentMarshaler m) throws ArgsException {
-        currentArgument++;
-
         try {
-            m.set(argsList.get(currentArgument));
+            m.set(currentArgument.next());
         } catch(ArrayIndexOutOfBoundsException e) {
             errorCode = ErrorCode.MISSING_STRING;
             throw new ArgsException();
