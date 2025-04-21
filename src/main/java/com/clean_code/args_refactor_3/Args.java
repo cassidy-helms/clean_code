@@ -10,7 +10,6 @@ import com.clean_code.args_refactor_3.exception.ArgsException;
 public class Args {
     private String schema;
     private boolean valid = true;
-    private Set<Character> unexpectedArguments = new TreeSet<Character>();
     private Map<Character, ArgumentMarshaler> marshalers = new HashMap<Character, ArgumentMarshaler>();
     private Set<Character> argsFound = new HashSet<Character>();
     private Iterator<String> currentArgument;
