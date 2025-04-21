@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.*;
 
 /*
- * This is not my code.  I am doing a slow walkthough of the Args Successive Refinemnet in Chapter 14 of Robert C. Martin's Clean Code
+ * This is not my code.  I am doing a slow walkthough of the Args Successive Refinement in Chapter 14 of Robert C. Martin's Clean Code
  */
 public class Args {
     private String schema;
