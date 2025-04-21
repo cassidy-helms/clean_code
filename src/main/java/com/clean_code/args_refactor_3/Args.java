@@ -3,6 +3,7 @@ package com.clean_code.args_refactor_3;
 import java.util.*;
 
 import com.clean_code.args_refactor_3.exception.ArgsException;
+import com.clean_code.args_refactor_3.marshaler.ArgumentMarshaler;
 
 /*
  * This is not my code.  I am doing a slow walkthough of the Args Successive Refinement in Chapter 14 of Robert C. Martin's Clean Code
@@ -173,12 +174,6 @@ public class Args {
 
     public boolean isValid() {
         return valid;
-    }
-
-    private interface ArgumentMarshaler {
-        public abstract void set(Iterator<String> currentArgument) throws ArgsException;
-
-        public abstract Object get();
     }
 
     private class BooleanArgumentMarshaler implements ArgumentMarshaler {       
