@@ -79,7 +79,17 @@ public class ComparisonCompactor {
     }
 
     private String computeCommonPrefix() {
-        return (prefixLength > contextLength ? ELLIPSIS : "") + expected.substring(Math.max(0, prefixLength - contextLength), prefixLength);
+        return startingEllipses() + startingContext();
+    }
+
+    private String startingEllipses() {
+        return prefixLength > contextLength ? ELLIPSIS : "";
+    }
+
+    private String startingContext() {
+        int contextStart = Math.max(0, prefixLength - contextLength);
+        int contextEnd = prefixLength;
+        return expected.substring(contextStart, contextEnd);
     }
 
     private String computeCommonSuffix() {
