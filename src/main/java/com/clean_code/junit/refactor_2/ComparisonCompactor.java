@@ -38,16 +38,20 @@ public class ComparisonCompactor {
     private void compactExpectedAndActual() {
         findCommonPrefixAndSuffix();
 
-        compactExpected = compactString(expected);
-        compactActual = compactString(actual);
+        compactExpected = compact(expected);
+        compactActual = compact(actual);
     }
 
-    private String compactString(String source) {
-        return computeCommonPrefix()
-            + DELTA_START
-            + delta(source)
-            + DELTA_END
-            + computeCommonSuffix();
+    private String compact(String source) {
+        return new StringBuilder()
+            .append(startingEllipses())
+            .append(startingContext())
+            .append(DELTA_START)
+            .append(delta(source))
+            .append(DELTA_END)
+            .append(endingContext())
+            .append(endingEllipsis())
+            .toString();
     }
 
     private void findCommonPrefixAndSuffix() {
