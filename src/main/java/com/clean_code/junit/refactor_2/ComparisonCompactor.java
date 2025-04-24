@@ -45,7 +45,7 @@ public class ComparisonCompactor {
     private String compactString(String source) {
         return computeCommonPrefix()
             + DELTA_START
-            + source.substring(prefixLength, source.length() - suffixLength)
+            + delta(source)
             + DELTA_END
             + computeCommonSuffix();
     }
@@ -96,6 +96,12 @@ public class ComparisonCompactor {
         int end = Math.min(expected.length() - suffixLength + contextLength, expected.length());
 
         return expected.substring(expected.length() - suffixLength, end) + (expected.length() - suffixLength < expected.length() - contextLength ? ELLIPSIS : "");
+    }
+
+    private String delta(String s) {
+        int deltaStart = prefixLength;
+        int deltaEnd = s.length() - suffixLength;
+        return s.substring(deltaStart, deltaEnd);
     }
 
     private boolean areStringsEqual() {
