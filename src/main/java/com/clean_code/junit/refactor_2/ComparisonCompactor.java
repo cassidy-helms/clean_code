@@ -93,9 +93,17 @@ public class ComparisonCompactor {
     }
 
     private String computeCommonSuffix() {
-        int end = Math.min(expected.length() - suffixLength + contextLength, expected.length());
+        return endingContext() + endingEllipsis();
+    }
 
-        return expected.substring(expected.length() - suffixLength, end) + (expected.length() - suffixLength < expected.length() - contextLength ? ELLIPSIS : "");
+    private String endingContext() {
+        int contextStart = expected.length() - suffixLength;
+        int contextEnd = Math.min(contextStart + contextLength, expected.length());
+        return expected.substring(contextStart, contextEnd);
+    }
+
+    private String endingEllipsis() {
+        return suffixLength > contextLength ? ELLIPSIS : "";
     }
 
     private String delta(String s) {
