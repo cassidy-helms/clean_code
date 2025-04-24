@@ -21,14 +21,15 @@ public class ComparisonCompactor {
     }
 
     public String formatCompactedComparison(String message) {
+        String compactExpected = expected;
+        String compactActual = actual;
         if(canBeCompacted()) {
             findCommonPrefixAndSuffix();
-            String compactExpected = compact(expected);
-            String compactActual = compact(actual);            
-            return Assert.format(message, compactExpected, compactActual);
-        } else {
-            return Assert.format(message, expected, actual);
+            compactExpected = compact(expected);
+            compactActual = compact(actual);            
         }
+
+        return Assert.format(message, compactExpected, compactActual);
     }
 
     private boolean canBeCompacted() {
