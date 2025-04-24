@@ -10,8 +10,6 @@ public class ComparisonCompactor {
 
     private int contextLength;
     private String expected;
-    private String compactExpected;
-    private String compactActual;
     private String actual;
     private int prefixLength;
     private int suffixLength;
@@ -24,7 +22,9 @@ public class ComparisonCompactor {
 
     public String formatCompactedComparison(String message) {
         if(canBeCompacted()) {
-            compactExpectedAndActual();
+            findCommonPrefixAndSuffix();
+            String compactExpected = compact(expected);
+            String compactActual = compact(actual);            
             return Assert.format(message, compactExpected, compactActual);
         } else {
             return Assert.format(message, expected, actual);
@@ -33,13 +33,6 @@ public class ComparisonCompactor {
 
     private boolean canBeCompacted() {
         return expected != null && actual != null && !areStringsEqual();
-    }
-
-    private void compactExpectedAndActual() {
-        findCommonPrefixAndSuffix();
-
-        compactExpected = compact(expected);
-        compactActual = compact(actual);
     }
 
     private String compact(String source) {
@@ -82,10 +75,6 @@ public class ComparisonCompactor {
             || expected.length() - suffixLength <= prefixLength;
     }
 
-    private String computeCommonPrefix() {
-        return startingEllipses() + startingContext();
-    }
-
     private String startingEllipses() {
         return prefixLength > contextLength ? ELLIPSIS : "";
     }
@@ -94,10 +83,6 @@ public class ComparisonCompactor {
         int contextStart = Math.max(0, prefixLength - contextLength);
         int contextEnd = prefixLength;
         return expected.substring(contextStart, contextEnd);
-    }
-
-    private String computeCommonSuffix() {
-        return endingContext() + endingEllipsis();
     }
 
     private String endingContext() {
