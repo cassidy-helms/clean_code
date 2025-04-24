@@ -23,7 +23,7 @@ public class ComparisonCompactor {
     public String formatCompactedComparison(String message) {
         String compactExpected = expected;
         String compactActual = actual;
-        if(canBeCompacted()) {
+        if(shouldBeCompacted()) {
             findCommonPrefixAndSuffix();
             compactExpected = compact(expected);
             compactActual = compact(actual);            
@@ -32,8 +32,13 @@ public class ComparisonCompactor {
         return Assert.format(message, compactExpected, compactActual);
     }
 
-    private boolean canBeCompacted() {
-        return expected != null && actual != null && !areStringsEqual();
+    private boolean shouldBeCompacted() {
+        return !shouldNotBeCompacted();
+    }
+
+    private boolean shouldNotBeCompacted() {
+        return expected == null || actual == null || areStringsEqual();
+
     }
 
     private String compact(String source) {
